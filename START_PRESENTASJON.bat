@@ -1,0 +1,3 @@
+@echo off
+echo Starter TET4100 SLT-1 Presentasjon...
+start "" "%~dp0presentation\index.html"

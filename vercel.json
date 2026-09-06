@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/presentation/",
+      "permanent": false
+    }
+  ]
+}

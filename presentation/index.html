@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TET4100 SLT-1: Kretsteori, Dynamiske Systemer & PI-Regulering</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
+  
+  <!-- KaTeX for crisp LaTeX math formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  
+  <!-- Custom Styles (Clean White Theme, Large Typography) -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Global Navigation & Progress Bar -->
+  <header class="top-nav">
+    <div class="brand">
+      <span class="ntnu-badge">NTNU</span>
+      <span class="course-code">TET4100</span>
+      <span class="topic-title">Kretsanalyse &middot; SLT-1 Komplett Gjennomgang</span>
+    </div>
+    <div class="nav-controls">
+      <button id="btn-grid" class="control-btn" title="Oversikt over alle slides (G)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Slide-oversikt
+      </button>
+      <button id="btn-fullscreen" class="control-btn" title="Fullskjerm (F)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        Fullskjerm
+      </button>
+    </div>
+    <div class="progress-bar-container">
+      <div id="progress-bar" class="progress-bar"></div>
+    </div>
+  </header>
+
+  <!-- Slide Deck Container -->
+  <main id="deck-container" class="deck-container">
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 1: INTRO / TITTEL -->
+    <!-- ============================================================ -->
+    <section class="slide active" data-slide="1">
+      <div class="slide-content intro-slide">
+        <div class="hero-tag">Institutt for Elektrisk Energi &middot; NTNU</div>
+        <h1 class="hero-title">TET4100 SLT-1: Kretsteori, Dynamikk &amp; PI-Regulering</h1>
+        <p class="hero-subtitle">
+          En grundig, pedagogisk steg-for-steg gjennomgang av alle 6 oppgaver med originale kretsskjemaer fra NTNU, oversatte oppgavetekster, intuitive forklaringer og fullstendige matematiske utregninger.
+        </p>
+
+        <div class="intro-cards-row">
+          <div class="intro-feature">
+            <div class="intro-feature-icon">&#9889;</div>
+            <h3>1. Fysiske Lover &amp; Sjokk</h3>
+            <p>Spoler motsetter seg brå strømendring (flyback-spenningsspiss) og kondensatorer motsetter seg brå spenningsendring (inrush-strømsjokk).</p>
+          </div>
+          <div class="intro-feature">
+            <div class="intro-feature-icon">&#9878;</div>
+            <h3>2. Dynamisk Stabilitet</h3>
+            <p>Kretser med avhengige kilder kan skape negativ motstand. Lær nøyaktig hvordan egenverdier i venstre/høyre halvplan styrer stabiliteten.</p>
+          </div>
+          <div class="intro-feature">
+            <div class="intro-feature-icon">&#128640;</div>
+            <h3>3. Digital Regulering</h3>
+            <p>Hvorfor foroverkobling (åpen sløyfe) svikter fatalt under lastforstyrrelser, og hvordan en digital PI-regulator garanterer 0 % stasjonæravvik.</p>
+          </div>
+        </div>
+
+        <div class="takeaway-card" style="max-width: 850px;">
+          <p>Naviger med <kbd style="background:#e2e8f0; padding:4px 10px; border-radius:6px; font-weight:bold;">&rarr;</kbd> piltast eller klikk <strong>Neste</strong> for å starte.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 2: DET STORE BILDET -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="2">
+      <div class="slide-content">
+        <div class="section-tag">Det Store Bildet</div>
+        <h2 class="slide-title">Den Røde Tråden: Hvorfor henger oppgavene sammen?</h2>
+        <p class="lead-text">
+          SLT-1 er bygget opp som en strukturert modningsprosess for elektro- og kybernetikkingeniører:
+        </p>
+
+        <div class="flow-diagram-clean">
+          <div class="clean-step">
+            <div class="clean-step-num">Del 1: Transienter</div>
+            <h4>Oppgave 1 &amp; 2</h4>
+            <p>Hva skjer idet en bryter åpnes eller lukkes? Brå energioverføring i spoler og kondensatorer.</p>
+          </div>
+          <div class="flow-arrow-clean">&rarr;</div>
+          <div class="clean-step">
+            <div class="clean-step-num">Del 2: Stabilitet</div>
+            <h4>Oppgave 3</h4>
+            <p>Aktive kilder kan mate energi inn i kretsen ($R < 0$). Vil spenningen dø ut mot null eller eksplodere?</p>
+          </div>
+          <div class="flow-arrow-clean">&rarr;</div>
+          <div class="clean-step">
+            <div class="clean-step-num">Del 3: Bevaring</div>
+            <h4>Oppgave 4</h4>
+            <p>Ladningsbevaring reduserer kretsen til 1. orden. 90 % av energien tapes alltid som varme!</p>
+          </div>
+          <div class="flow-arrow-clean">&rarr;</div>
+          <div class="clean-step active-step">
+            <div class="clean-step-num">Del 4: Kybernetikk</div>
+            <h4>Oppgave 5 &amp; 6</h4>
+            <p>Fra sårbar åpen sløyfe til en robust digital <strong>PI-regulator</strong> som eliminerer lastforstyrrelser.</p>
+          </div>
+        </div>
+
+        <div class="intuition-box">
+          <div class="intuition-title">&#128161; Grunnleggende intuisjon</div>
+          <div class="intuition-text">
+            I den virkelige verden endrer motstand i motorer og impedans i kraftnett seg hele tiden med temperatur og last. Å tro at man kan styre et system med en fast forhåndsberegnet spenning er dømt til å feile. Vi trenger <strong>tilbakekobling med integralvirkning</strong>!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 3: TASK 1 (DEL 1) -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="3">
+      <div class="slide-content">
+        <div class="section-tag">Oppgave 1 &middot; Del 1</div>
+        <h2 class="slide-title">Task 1: Basic RL &ndash; Kretsskjema &amp; Tilstand Før Bryteråpning</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="task-text-box">
+              <div class="task-text-label">&#128221; Oppgavetekst (Oversatt til norsk)</div>
+              <div class="task-text-content">
+                Kretsen vist i figur 1 inneholder en spole med induktans $L = 120\text{ mH}$ samt motstandene $R_1 = 24\,\Omega$ og $R_2 = 48\,\Omega$. Forsyningsspenningen er $U = 36\text{ V}$, og bryteren har vært lukket i lang tid (stasjonærtilstand kan antas). Ved tidspunktet $t = 0$ åpnes bryteren.
+              </div>
+            </div>
+
+            <div class="intuition-box">
+              <div class="intuition-title">&#128161; Nybegynner-analogi: Spolen som et tungt svinghjul</div>
+              <div class="intuition-text">
+                En spole lagrer energi i et magnetfelt. Tenk på strømmen som vann i et tungt rør, eller et roterende svinghjul: <strong>Strømmen nekter å bråstoppe!</strong> Hvis du prøver å stenge kretsen brått, bygger det seg opp et enormt spenningstrykk (flyback).
+              </div>
+            </div>
+
+            <div class="step-container">
+              <div class="step-card">
+                <div class="step-title"><span class="step-tag">DEL (a)</span> Spenning over spolen like før bryting: $v_L(0^-) = 0\text{ V}$</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Forstå stasjonærtilstand (DC steady-state):</strong><br>
+                  Når likespenning har stått på i lang tid, slutter strømmen å endre seg: $\frac{di_L}{dt} = 0$.<br>
+                  <strong>Steg 2 &ndash; Bruk spolens konstitutive ligning:</strong><br>
+                  $$v_L(t) = L \frac{di_L}{dt} = 0.12 \cdot 0 = \mathbf{0\text{ V}}$$
+                  En ideell spole under likespenning oppfører seg som en <strong>ren kortslutning</strong> (en vanlig ledning med 0 volt spenningsfall).
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title"><span class="step-tag">DEL (b)</span> Spolestrøm like før bryting: $i_L(0^-) = 1.5\text{ A}$</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Finn spenningen over parallellgrenen:</strong><br>
+                  Siden spolen $L$ står i direkte parallell med $R_2$, er spenningen over $R_2$ lik spolespenningen: $v_{R2}(0^-) = v_L(0^-) = 0\text{ V}$.<br>
+                  <strong>Steg 2 &ndash; Strøm gjennom $R_2$:</strong><br>
+                  Ifølge Ohms lov er $i_{R2}(0^-) = \frac{v_{R2}}{R_2} = \frac{0}{48} = 0\text{ A}$. Spolen &laquo;stjeler&raquo; all strømmen fordi den er en motstandsløs kortslutning!<br>
+                  <strong>Steg 3 &ndash; Beregn spolestrømmen fra kilden:</strong><br>
+                  Hele kildespenningen $U = 36\text{ V}$ faller over motstand $R_1$:
+                  $$i_L(0^-) = \frac{U}{R_1} = \frac{36\text{ V}}{24\,\Omega} = \mathbf{1.5\text{ A}} \quad \text{(rettet nedover gjennom spolen)}$$
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="circuit-display-card">
+              <h4>&#9889; Originalt Kretsskjema (Figur 1 fra oppgaven)</h4>
+              <img src="../assets/circuits/circuit_task1.png" alt="Figur 1 Kretsskjema" class="circuit-img">
+            </div>
+
+            <div class="takeaway-card">
+              <h4>Oppsummering før bryteren åpnes ($t = 0^-$):</h4>
+              <p>&bull; <strong>Spolespenning:</strong> $v_L(0^-) = 0\text{ V}$ (kortslutning)</p>
+              <p>&bull; <strong>Spolestrøm:</strong> $i_L(0^-) = 1.5\text{ A}$ (fullt oppladet magnetfelt)</p>
+              <p>&bull; <strong>Motstand $R_2$:</strong> Fører 0 A fordi spolen kortslutter den</p>
+              <p style="margin-top:10px; font-weight:800; color:var(--ntnu-blue);">
+                Hva skjer i neste mikrosekund når bryteren åpnes og kilden kobles vekk?
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 4: TASK 1 (DEL 2) -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="4">
+      <div class="slide-content">
+        <div class="section-tag">Oppgave 1 &middot; Del 2</div>
+        <h2 class="slide-title">Task 1: Den Farlige Spenningsspissen (Flyback) &amp; Utlading</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="step-container">
+              <div class="step-card danger">
+                <div class="step-title"><span class="step-tag" style="background:#fee2e2; color:#991b1b;">DEL (c)</span> Spenning like etter bryting: $v_L(0^+) = -72\text{ V}$!</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Tilstandskontinuitet (Kjerneregel):</strong><br>
+                  Strømmen i en spole kan <em>aldri</em> endre seg momentant: $i_L(0^+) = i_L(0^-) = 1.5\text{ A}$.<br>
+                  <strong>Steg 2 &ndash; Ny kretsstruktur etter bryteråpning:</strong><br>
+                  Kilden $U$ og $R_1$ er frakoblet. Den eneste lukkede veien for de $1.5\text{ A}$ er å gå ned gjennom spolen, langs bunnlederen, og **oppover** gjennom $R_2 = 48\,\Omega$.<br>
+                  <strong>Steg 3 &ndash; Beregn spenningsfallet:</strong><br>
+                  Siden strømmen går inn i bunnen av $R_2$, blir potensialet på toppen lavere enn bunnen:
+                  $$v_L(0^+) = -i_L(0^+) \cdot R_2 = -(1.5\text{ A}) \cdot (48\,\Omega) = \mathbf{-72\text{ V}}$$
+                  Spenningen hopper momentant fra $0\text{ V}$ til <strong>$-72\text{ V}$</strong>!
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title"><span class="step-tag">DEL (d) &amp; (e)</span> Strømuttrykk $i_L(t)$ og tidspunkt for 1 A</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Sett opp sløyfeligningen (KVL) for $t \ge 0$:</strong><br>
+                  $$v_L(t) + R_2 i_L(t) = 0 \implies L \frac{di_L}{dt} + R_2 i_L(t) = 0 \implies \frac{di_L}{dt} + \frac{R_2}{L} i_L(t) = 0$$
+                  <strong>Steg 2 &ndash; Finn tidskonstanten $\tau$:</strong><br>
+                  $$\tau = \frac{L}{R_2} = \frac{0.12\text{ H}}{48\,\Omega} = 0.0025\text{ s} = \mathbf{2.5\text{ ms}} \implies \frac{1}{\tau} = 400\text{ s}^{-1}$$
+                  <strong>Steg 3 &ndash; Skriv ut løsningen for $i_L(t)$:</strong><br>
+                  $$\mathbf{i_L(t) = i_L(0^+) e^{-t/\tau} = 1.5 e^{-400t}\text{ A}} \quad (t \ge 0^+)$$
+                  <strong>Steg 4 &ndash; Løs for når strømmen er 1 A:</strong><br>
+                  $$1.5 e^{-400t} = 1 \implies e^{-400t} = \frac{2}{3} \implies e^{400t} = 1.5$$
+                  $$400t = \ln(1.5) \approx 0.405465 \implies \mathbf{t = \frac{0.405465}{400} = 1.014\text{ ms}}$$
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="graph-container">
+              <h4>Respons i Spolen ved Bryteråpning</h4>
+              <img src="../assets/plots/task1_rl_response.png" alt="Task 1 RL Response" class="slide-img">
+              <div class="img-caption">Se hvordan spenningen stuper momentant til -72 V idet bryteren åpnes!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 5: TASK 1 I VIRKELIGHETEN -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="5">
+      <div class="slide-content">
+        <div class="section-tag">Industriell Anvendelse &middot; Oppgave 1</div>
+        <h2 class="slide-title">Hvorfor brenner reléer opp uten flyback-beskyttelse?</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="realworld-card">
+              <img src="../assets/images/flyback_relay_protection.jpg" alt="Flyback Relay Protection" class="realworld-img">
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="badge-tag">Kraftelektronikk &middot; Elbil-kontaktorer</div>
+            
+            <div class="danger-box">
+              <strong>Faren i virkeligheten:</strong>
+              I elbiler og industri brukes store kontaktorer til å koble ut elektromotorer. Når kontaktene åpner, prøver spolen å tvinge strømmen videre. Siden luften har uendelig motstand, presses spenningen opp til <strong>flere tusen volt</strong> ($v = L \frac{di}{dt}$). Det oppstår en hvitglødende lysbue som sveiser eller brenner opp kontaktene!
+            </div>
+
+            <div class="solution-box" style="margin-top: 14px;">
+              <strong>Løsningen i praksis (Akkurat som $R_2$ i oppgaven):</strong>
+              Man kobler en <strong>flyback-diode</strong> (frihjulsdiode) i parallell med spolen. Når bryteren åpnes, leder dioden strømmen i en trygg ring, og energien lades ut uten farlige spenningstopper.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 6: TASK 2 (DEL 1) -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="6">
+      <div class="slide-content">
+        <div class="section-tag">Oppgave 2 &middot; Del 1</div>
+        <h2 class="slide-title">Task 2: Sekvensiell Svitsjing &ndash; Kretsskjema &amp; Første Lading</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="task-text-box">
+              <div class="task-text-label">&#128221; Oppgavetekst (Oversatt til norsk)</div>
+              <div class="task-text-content">
+                Betrakt RC-kretsen vist i Figur 2. Bryteren flyttes til posisjon 1 ved $t = 0$, og etter én tidskonstant ($\tau$) flyttes den til posisjon 2 for en ytterligere varighet på $5\tau$. Anta at kondensatoren i utgangspunktet er uladet ($v_c(0) = 0$).<br>
+                <em>Merk: Tidskonstanten $\tau = -1/s$ der $s$ er roten til den karakteristiske ligningen.</em>
+              </div>
+            </div>
+
+            <div class="intuition-box">
+              <div class="intuition-title">&#128161; Nybegynner-analogi: Kondensatoren som en vanntank</div>
+              <div class="intuition-text">
+                En kondensator lagrer energi i et elektrisk felt (ladning). Tenk på den som en vanntank: <strong>Vanntrykket (spenningen) kan ikke endre seg på et blunk!</strong> Det krever tid å fylle eller tømme tanken med vann (strøm).
+              </div>
+            </div>
+
+            <div class="step-container">
+              <div class="step-card">
+                <div class="step-title"><span class="step-tag">DEL (a)</span> Trinn 1: Lading mot $+10\text{ V}$ ($0 \le t < \tau$)</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Beregn tidskonstanten $\tau$:</strong><br>
+                  Karakteristisk ligning: $s + \frac{1}{RC} = 0 \implies s = -\frac{1}{RC}$.<br>
+                  Tidskonstanten er $\tau = -\frac{1}{s} = R \cdot C = 1000\,\Omega \times 10^{-6}\text{ F} = \mathbf{1\text{ ms}}$.<br>
+                  <strong>Steg 2 &ndash; Bruk standardformelen for 1. ordens trinnrespons:</strong><br>
+                  $$v_C(t) = V_{\text{slutt}} + (V_{\text{start}} - V_{\text{slutt}}) e^{-t/\tau}$$
+                  Med $V_{\text{start}} = 0\text{ V}$ og $V_{\text{slutt}} = +10\text{ V}$:<br>
+                  $$\mathbf{v_C(t) = 10(1 - e^{-t/\tau})\text{ V} = 10(1 - e^{-1000t})\text{ V}} \quad (0 \le t < \tau)$$
+                </div>
+              </div>
+
+              <div class="step-card success">
+                <div class="step-title"><span class="step-tag">DEL (b)</span> Spenning ved svitsjeøyeblikket: $v_C(\tau^+) = 6.321\text{ V}$</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Kontinuitet av kondensatorspenning:</strong><br>
+                  Kondensatorspenningen kan ikke endre seg sprangvis: $v_C(\tau^+) = v_C(\tau^-)$.<br>
+                  <strong>Steg 2 &ndash; Sett inn $t = \tau$:</strong><br>
+                  $$v_C(\tau^+) = 10(1 - e^{-1}) = 10(1 - 0.367879) \approx \mathbf{6.321\text{ V}}$$
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="circuit-display-card">
+              <h4>&#9889; Originalt Kretsskjema (Figur 2 fra oppgaven)</h4>
+              <img src="../assets/circuits/circuit_task2.png" alt="Figur 2 Kretsskjema" class="circuit-img">
+            </div>
+
+            <div class="takeaway-card">
+              <h4>Status etter 1 tidskonstant:</h4>
+              <p>&bull; Kondensatorspenning: $v_C = 6.321\text{ V}$</p>
+              <p>&bull; Kilde 1 er $+10\text{ V}$, Kilde 2 er $-20\text{ V}$</p>
+              <p style="margin-top:10px; font-weight:800; color:var(--ntnu-blue);">
+                Hva skjer når bryteren vippes over til -20 V?
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 7: TASK 2 (DEL 2) -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="7">
+      <div class="slide-content">
+        <div class="section-tag">Oppgave 2 &middot; Del 2</div>
+        <h2 class="slide-title">Task 2: Reversert Spenning &amp; Det Voldsomme Strømspranget</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="step-container">
+              <div class="step-card">
+                <div class="step-title"><span class="step-tag">DEL (c)</span> Trinn 2: Utlading mot $-20\text{ V}$ ($\tau \le t \le 6\tau$)</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Identifiser nye start- og sluttverdier:</strong><br>
+                  Startverdi ved $t = \tau$: $V_{\text{start}} = v_C(\tau) = 10(1 - e^{-1}) \approx 6.321\text{ V}$.<br>
+                  Nytt sluttmål fra kilde 2: $V_{\text{slutt}} = -20\text{ V}$.<br>
+                  <strong>Steg 2 &ndash; Bruk tidsforsinket trinnrespons:</strong><br>
+                  $$v_C(t) = V_{\text{slutt}} + [V_{\text{start}} - V_{\text{slutt}}] e^{-(t - \tau)/\tau}$$
+                  $$v_C(t) = -20 + [6.321 - (-20)] e^{-(t - \tau)/\tau} = \mathbf{-20 + 26.321 e^{-(t - \tau)/\tau}\text{ V}}$$
+                </div>
+              </div>
+
+              <div class="step-card danger">
+                <div class="step-title"><span class="step-tag" style="background:#fee2e2; color:#991b1b;">DEL (d)</span> Strømspranget: Fra $+3.68\text{ mA}$ til $-26.32\text{ mA}$!</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Finn strømmen like før svitsjing ($t = \tau^-$):</strong><br>
+                  $$i(\tau^-) = \frac{v_{\text{kilde}} - v_C(\tau^-)}{R} = \frac{10 - 6.321}{1000} = \mathbf{+3.68\text{ mA}}$$
+                  <strong>Steg 2 &ndash; Finn strømmen like etter svitsjing ($t = \tau^+$):</strong><br>
+                  Kildespenningen hopper momentant til $-20\text{ V}$, mens $v_C$ fortsatt er $+6.321\text{ V}$:<br>
+                  $$i(\tau^+) = \frac{-20 - 6.321}{1000} = \mathbf{-26.32\text{ mA}}$$
+                  <strong>Konklusjon:</strong> Spenningen endrer seg mykt og kontinuerlig, men strømmen opplever et gigantisk sprang på nesten 30 mA!
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="graph-container">
+              <h4>Kondensatorspenning og Strømsprang</h4>
+              <img src="../assets/plots/task2_rc_sequential.png" alt="Task 2 Sequential Plot" class="slide-img">
+              <div class="img-caption">Øverst: Jevn spenning. Nederst: Det dramatiske strømhoppet ved 1 ms!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 8: TASK 2 & 4 I VIRKELIGHETEN -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="8">
+      <div class="slide-content">
+        <div class="section-tag">Industriell Anvendelse &middot; Oppgave 2 &amp; 4</div>
+        <h2 class="slide-title">Hvorfor må elbiler &laquo;forlades&raquo; før de starter?</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="realworld-card">
+              <img src="../assets/images/ev_inverter_precharge.jpg" alt="EV Inverter Pre-charge" class="realworld-img">
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="badge-tag">Elbil &middot; DC-Link Kondensatorbank &middot; Batterisikkerhet</div>
+            
+            <div class="danger-box">
+              <strong>Det katastrofale strømsjokket (Inrush Current):</strong>
+              Inverteren i en elbil har en enorm kondensatorbank (DC-Link). Når bilen er av, er denne tom ($0\text{ V}$). Batteripakken er på 800 V. Hvis man koblet batteriet direkte til den tomme kondensatoren, ville strømmen blitt:
+              $$I = \frac{800\text{ V}}{0.05\,\Omega} = \mathbf{16\,000\text{ A!}}$$
+              Dette ville eksplodert releene eller sveiset kontaktene fast for godt!
+            </div>
+
+            <div class="solution-box" style="margin-top: 14px;">
+              <strong>Løsningen: Sekvensiell svitsjing (Akkurat som i Oppgave 2):</strong>
+              1. Bilen lukker først en liten kontaktor med en forladingsmotstand på f.eks. $30\,\Omega$.<br>
+              2. Kondensatoren lades kontrollert opp over $3\tau - 5\tau$ (ca. 200 ms).<br>
+              3. Når spenningen er på 98 %, lukkes hovedkontaktoren helt trygt!
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 9: TASK 3 (DEL 1) -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="9">
+      <div class="slide-content">
+        <div class="section-tag">Oppgave 3 &middot; Del 1</div>
+        <h2 class="slide-title">Task 3: Dynamisk Stabilitet &ndash; Kretsskjema &amp; Differensialligning</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="task-text-box">
+              <div class="task-text-label">&#128221; Oppgavetekst (Oversatt til norsk)</div>
+              <div class="task-text-content">
+                La oss betrakte kretsen i Figur 3 med følgende parametere: $R_1 = 10\text{ k}\Omega$, $R_2 = 20\text{ k}\Omega$ og $C = 5\,\mu\text{F}$.<br>
+                1. Utled differensialligningen som beskriver $v_0(t)$ for $t > 0$.<br>
+                2. Er differensialligningen homogen eller inhomogen? Begrunn kort svaret ditt.
+              </div>
+            </div>
+
+            <div class="intuition-box">
+              <div class="intuition-title">&#128161; Hva betyr &laquo;negativ motstand&raquo; for en nybegynner?</div>
+              <div class="intuition-text">
+                En vanlig motstand spiser energi og bremser strømmen ($P = I^2 R > 0$). En <strong>avhengig kilde</strong> kan derimot pumpe energi <em>inn</em> i kretsen. Hvis den mater inn mer energi enn motstandene klarer å fjerne, oppfører kretsen seg som en <strong>negativ motstand</strong>. Da eksploderer signalet!
+              </div>
+            </div>
+
+            <div class="step-container">
+              <div class="step-card">
+                <div class="step-title"><span class="step-tag">SPØRSMÅL 1</span> Steg-for-steg utledning via KCL</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Identifiser grenstrømmene ut av toppnoden:</strong><br>
+                  &bull; Kondensator: $i_c = C \frac{dv_0}{dt}$<br>
+                  &bull; Motstand $R_1$: $i_{R1} = \frac{v_0}{R_1}$<br>
+                  &bull; Avhengig strømkilde: Rettet oppover, så strøm ut av noden nedover er $-7 i_\Delta$<br>
+                  &bull; Motstand $R_2$: $i_\Delta = \frac{v_0}{R_2}$<br>
+                  <strong>Steg 2 &ndash; Still opp Kirchhoffs strømlov (KCL):</strong><br>
+                  $$C \frac{dv_0}{dt} + \frac{v_0}{R_1} - 7 i_\Delta + i_\Delta = 0 \implies C \frac{dv_0}{dt} + \frac{v_0}{R_1} - 6 i_\Delta = 0$$
+                  <strong>Steg 3 &ndash; Sett inn $i_\Delta = \frac{v_0}{R_2}$ og del på $C$:</strong><br>
+                  $$\mathbf{\frac{dv_0(t)}{dt} + \frac{1}{C}\left(\frac{1}{R_1} - \frac{6}{R_2}\right) v_0(t) = 0}$$
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="circuit-display-card">
+              <h4>&#9889; Originalt Kretsskjema (Figur 3 fra oppgaven)</h4>
+              <img src="../assets/circuits/circuit_task3.png" alt="Figur 3 Kretsskjema" class="circuit-img">
+            </div>
+
+            <div class="step-card success">
+              <div class="step-title"><span class="step-tag">SPØRSMÅL 2</span> Hvorfor er ligningen homogen?</div>
+              <div class="step-body">
+                Ligningen er <strong>HOMOGEN</strong> fordi det ikke finnes noen uavhengige drivkilder i kretsen (høyresiden er lik 0, dvs. $f(t) = 0$).<br>
+                Alle ledd avhenger direkte av tilstandsvariabelen $v_0(t)$ eller dens deriverte. Likevektspunktet er origo: $\mathbf{v_0^* = 0\text{ V}}$.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 10: TASK 3 (DEL 2) -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="10">
+      <div class="slide-content">
+        <div class="section-tag">Oppgave 3 &middot; Del 2</div>
+        <h2 class="slide-title">Task 3: Ustabil Eksplosjon vs. Stabil Dempning</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="stability-compare">
+              <div class="stability-card unstable">
+                <h4>Tilfelle 1: $R_1 = 10\text{ k}\Omega$ (Deloppgave 3)</h4>
+                <p><strong>Steg 1 &ndash; Beregn netto konduktans:</strong></p>
+                $$G_{\text{eq}} = \frac{1}{10000} - \frac{6}{20000} = -0.2\text{ mS} < 0$$
+                <p><strong>Steg 2 &ndash; Finn koeffisienten foran $v_0$:</strong></p>
+                $$\frac{G_{\text{eq}}}{C} = \frac{-0.0002}{5\times 10^{-6}} = -40\text{ s}^{-1}$$
+                <p><strong>Steg 3 &ndash; Karakteristisk ligning:</strong> $s - 40 = 0 \implies \mathbf{\lambda = +40\text{ s}^{-1} > 0}$</p>
+                <p style="color:#991b1b; font-weight:800; margin-top:8px;">
+                  USTABIL EKSPLOSJON! ($v_0(t) = v_0(0^+) e^{+40t}$)
+                </p>
+                <p style="font-size:1rem;">Starter den på 10 V, eksploderer den til <strong>146 V</strong> på bare 67 ms!</p>
+              </div>
+
+              <div class="stability-card stable">
+                <h4>Tilfelle 2: $R_1 = 2\text{ k}\Omega$ (Deloppgave 4)</h4>
+                <p><strong>Steg 1 &ndash; Beregn netto konduktans:</strong></p>
+                $$G_{\text{eq}} = \frac{1}{2000} - \frac{6}{20000} = +0.2\text{ mS} > 0$$
+                <p><strong>Steg 2 &ndash; Finn koeffisienten foran $v_0$:</strong></p>
+                $$\frac{G_{\text{eq}}}{C} = \frac{+0.0002}{5\times 10^{-6}} = +40\text{ s}^{-1}$$
+                <p><strong>Steg 3 &ndash; Karakteristisk ligning:</strong> $s + 40 = 0 \implies \mathbf{\lambda = -40\text{ s}^{-1} < 0}$</p>
+                <p style="color:#166534; font-weight:800; margin-top:8px;">
+                  STABIL DEMPNING! ($v_0(t) = v_0(0^+) e^{-40t}$)
+                </p>
+                <p style="font-size:1rem;">Uansett startverdi konvergerer spenningen trygt tilbake til <strong>0 V</strong>.</p>
+              </div>
+            </div>
+
+            <div class="intuition-box" style="margin-top:16px;">
+              <div class="intuition-title">&#128161; Fortegnsregelen for stabilitet</div>
+              <div class="intuition-text">
+                &bull; Hvis $\lambda > 0$: Løsningen inneholder $e^{+\lambda t} \to \infty$ (Ustabil repeller).<br>
+                &bull; Hvis $\lambda < 0$: Løsningen inneholder $e^{-\lambda t} \to 0$ (Stabil attraktor).
+              </div>
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="graph-container">
+              <h4>Stabilitetssammenligning (Oppgave 3)</h4>
+              <img src="../assets/plots/task3_stability_comparison.png" alt="Task 3 Stability Plot" class="slide-img">
+              <div class="img-caption">Venstre: Eksponentiell vekst. Høyre: Eksponentiell dempning mot 0 V.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 11: TASK 3 I VIRKELIGHETEN -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="11">
+      <div class="slide-content">
+        <div class="section-tag">Industriell Anvendelse &middot; Oppgave 3</div>
+        <h2 class="slide-title">Når kraftnettet og fornybar energi begynner å svinge</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="takeaway-card" style="border-left: 6px solid var(--accent-rose); background:#fff5f5;">
+              <h4 style="color:#991b1b;">Konstant-effekt-laster oppfører seg som negativ motstand!</h4>
+              <p style="font-size:1.12rem; line-height:1.65; color:#7f1d1d;">
+                I dag er elbilladere, datasentre og fornybare vekselrettere programmert til å trekke <strong>konstant effekt ($P = V \cdot I$)</strong>.
+              </p>
+              <p style="font-size:1.12rem; line-height:1.65; color:#7f1d1d; margin-top:10px;">
+                Hvis nettspenningen $V$ synker et øyeblikk, <em>øker</em> omformeren strømmen $I$ for å holde effekten oppe. Dette betyr at differensiell motstand er negativ:
+                $$\frac{dV}{dI} < 0 \implies R_{\text{diff}} < 0$$
+              </p>
+            </div>
+
+            <div class="solution-box" style="margin-top:16px;">
+              <strong>Akkurat som i Oppgave 3:</strong>
+              Hvis nettet er svakt (for lite dempning, tilsvarende $R_1 = 10\text{ k}\Omega$), vil denne negative motstanden dytte polene over i høyre halvplan. Det oppstår ukontrollerte svingninger som kan slå ut strømnettet!
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="calc-card">
+              <div class="calc-header">Poler i det komplekse s-planet</div>
+              <div class="complex-plane" style="height:230px; margin-top:10px;">
+                <div class="axis-v"></div>
+                <div class="axis-h"></div>
+                <div class="unstable-zone">Høyre: USTABILT (&lambda; = +40)</div>
+                <div class="stable-zone">Venstre: STABILT (&lambda; = -40)</div>
+                <div class="pole pole-unstable">&times;</div>
+                <div class="pole pole-stable">&times;</div>
+              </div>
+              <div class="img-caption">Polplassering avgjør stabiliteten i det elektriske kraftnettet.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 12: TASK 4 (DEL 1) -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="12">
+      <div class="slide-content">
+        <div class="section-tag">Oppgave 4 &middot; Del 1</div>
+        <h2 class="slide-title">Task 4: Strøm mellom To Kondensatorer &ndash; Kretsskjema</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="task-text-box">
+              <div class="task-text-label">&#128221; Oppgavetekst (Oversatt til norsk)</div>
+              <div class="task-text-content">
+                En inngangskondensator $C$ med initialspenning $u_c(0^+) = U$ kobles ved $t = 0$ via en motstand $R$ til en initialt uladet utgangskondensator som har ni ganger større kapasitans ($9C$) enn inngangskondensatoren (symbolsk beregning).<br>
+                1. Vis at selv om kretsen inneholder to energilagre, er den bare et førsteordens system. (Hint: $i_c(t) = -i_{9c}(t) = i(t)$).<br>
+                2. Beregn den tidsavhengige strømmen ($t \ge 0^+$).
+              </div>
+            </div>
+
+            <div class="step-container">
+              <div class="step-card">
+                <div class="step-title"><span class="step-tag">SPØRSMÅL 1</span> Bevis for 1. ordens dynamikk via ladningsbevaring</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Ladningsbevaring i isolert krets:</strong><br>
+                  Strømmen ut av $C$ må gå direkte inn i $9C$: $i_C(t) = -i_{9C}(t) = i(t)$. Total ladning er bevart:
+                  $$q_C(t) + q_{9C}(t) = Q_{\text{tot}} = C \cdot U$$
+                  <strong>Steg 2 &ndash; Finn den algebraiske bindingsligningen:</strong><br>
+                  $$C u_C(t) + 9C u_{9C}(t) = C U \implies u_C(t) + 9 u_{9C}(t) = U$$
+                  Fordi spenningene er låst sammen, finnes det bare <strong>én uavhengig tilstand</strong>!
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="circuit-display-card">
+              <h4>&#9889; Originalt Kretsskjema (Figur 4 fra oppgaven)</h4>
+              <img src="../assets/circuits/circuit_task4.png" alt="Figur 4 Kretsskjema" class="circuit-img">
+            </div>
+
+            <div class="step-card success">
+              <div class="step-title"><span class="step-tag">SPØRSMÅL 2</span> Beregning av strømmen $i(t)$</div>
+              <div class="step-body">
+                <strong>Steg 1 &ndash; Finn ekvivalent seriekapasitans:</strong><br>
+                $$\frac{1}{C_{\text{eq}}} = \frac{1}{C} + \frac{1}{9C} = \frac{10}{9C} \implies C_{\text{eq}} = \mathbf{0.9 C}$$
+                <strong>Steg 2 &ndash; Finn tidskonstanten $\tau$:</strong> $\tau = R C_{\text{eq}} = \mathbf{0.9 RC}$.<br>
+                <strong>Steg 3 &ndash; Initialstrøm ved $t = 0^+$:</strong> $i(0^+) = \frac{u_C(0^+) - u_{9C}(0^+)}{R} = \frac{U - 0}{R} = \frac{U}{R}$.<br>
+                $$\mathbf{i(t) = \frac{U}{R} e^{-\frac{10t}{9RC}} = \frac{U}{R} e^{-t / (0.9 RC)}}$$
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 13: TASK 4 (DEL 2) -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="13">
+      <div class="slide-content">
+        <div class="section-tag">Oppgave 4 &middot; Del 2</div>
+        <h2 class="slide-title">Task 4: To-Kondensator-Paradokset &ndash; Hvorfor tapes 90 %?</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="step-container">
+              <div class="step-card danger">
+                <div class="step-title"><span class="step-tag" style="background:#fee2e2; color:#991b1b;">PARADOKSET</span> Energiregnskapet før og etter lading</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Initial energi i systemet ($t = 0$):</strong><br>
+                  All energi er lagret i den lille kondensatoren $C$:<br>
+                  $$E_i = \frac{1}{2} C U^2$$
+                  <strong>Steg 2 &ndash; Sluttspenning ved $t \to \infty$:</strong><br>
+                  Ved ladningsbevaring deler de ladningen: $Q_{\text{tot}} = (C + 9C) V_f = C U \implies \mathbf{V_f = 0.1 U}$.<br>
+                  <strong>Steg 3 &ndash; Sluttenergi i begge kondensatorene:</strong><br>
+                  $$E_f = \frac{1}{2}(10C)(0.1 U)^2 = \frac{1}{2}(10C)(0.01 U^2) = 0.1 \left(\frac{1}{2} C U^2\right) = \mathbf{0.1 E_i}$$
+                  <div class="danger-box" style="margin-top:12px;">
+                    <strong>Nøyaktig 90 % av energien forsvinner i motstanden som varme, uansett hvor liten motstand $R$ er!</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="graph-container">
+              <h4>Spenning og Energitap (Oppgave 4)</h4>
+              <img src="../assets/plots/task4_capacitors_redistribution.png" alt="Task 4 Plot" class="slide-img">
+              <div class="img-caption">Uansett motstandsverdi R tapes 90 % av energien under utjevningen!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 14: TASK 5 - EQUILIBRIUM CONTROL -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="14">
+      <div class="slide-content">
+        <div class="section-tag">Oppgave 5</div>
+        <h2 class="slide-title">Task 5: Likevektsstyring &ndash; Kretsskjema &amp; Åpen Sløyfe</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="task-text-box">
+              <div class="task-text-label">&#128221; Oppgavetekst (Oversatt til norsk)</div>
+              <div class="task-text-content">
+                Kretsen vist i Figur 5 inneholder en initialt avmagnetisert spole $L = 3\text{ H}$, lastmotstanden $R_{\text{load}} = 6\,\Omega$ og en regulerbar spenningskilde $u(t)$. La $i(t)$ betegne strømmen gjennom spolen.<br>
+                (a) Utled differensialligningen som beskriver $i(t)$ samt den karakteristiske ligningen.<br>
+                (b) For hvilket verdiområde av $k$ er kretsen stabil? Begrunn svaret.<br>
+                (c) Finn uttrykket for en konstant verdi for kilden som funksjon av referansen: $\bar{u} = f(i^{\text{ref}})$.<br>
+                (d) Sørg for at $\lim_{t\to\infty} i(t) = 4\text{ A}$ når $k = 3$.
+              </div>
+            </div>
+
+            <div class="step-container">
+              <div class="step-card">
+                <div class="step-title"><span class="step-tag">DEL (a) &amp; (b)</span> Utledning &amp; Stabilitetskrav ($k < 6\,\Omega$)</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Kirchhoffs spenningslov (KVL) i sløyfen:</strong><br>
+                  $$u(t) - L \frac{di}{dt} - (-k i) - R_{\text{load}} i = 0 \implies \mathbf{L \frac{di}{dt} + (R_{\text{load}} - k) i(t) = u(t)}$$
+                  <strong>Steg 2 &ndash; Karakteristisk rot:</strong> $Ls + (R_{\text{load}} - k) = 0 \implies s = -\frac{R_{\text{load}} - k}{L}$.<br>
+                  For stabilitet må polen ligge i venstre halvplan: $R_{\text{load}} - k > 0 \implies \mathbf{k < 6\,\Omega}$.
+                </div>
+              </div>
+
+              <div class="step-card success">
+                <div class="step-title"><span class="step-tag">DEL (c) &amp; (d)</span> Åpen sløyfe: $\bar{u} = 12\text{ V}$ gir $i = 4\text{ A}$</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Stasjonærtilstand ($\frac{di}{dt} = 0$):</strong> $\bar{u} = (R_{\text{load}} - k) i^{\text{ref}} = (6 - 3) \times 4 = \mathbf{12\text{ V}}$.<br>
+                  <strong>Steg 2 &ndash; Verifikasjon av løsning:</strong> $3 \frac{di}{dt} + 3 i = 12 \implies i(t) = 4(1 - e^{-t})\text{ A} \to \mathbf{4\text{ A}}$.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="circuit-display-card">
+              <h4>&#9889; Originalt Kretsskjema (Figur 5 fra oppgaven)</h4>
+              <img src="../assets/circuits/circuit_task5.png" alt="Figur 5 Kretsskjema" class="circuit-img">
+            </div>
+
+            <div class="takeaway-card" style="border-left:5px solid var(--accent-amber); background:var(--accent-amber-bg);">
+              <h4 style="color:#b45309;">Hva er den skjulte fellen her?</h4>
+              <p style="color:#92400e; font-size:1.1rem; line-height:1.6;">
+                Beregningen $\bar{u} = 12\text{ V}$ er en <strong>åpen sløyfe (feedforward)</strong>. Den forutsetter at vi kjenner $R_{\text{load}} = 6\,\Omega$ med 100 % sikkerhet for all fremtid! Hva skjer hvis lasten endrer seg?
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 15: TASK 6 (DEL 1) -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="15">
+      <div class="slide-content">
+        <div class="section-tag">Oppgave 6 &middot; Del 1</div>
+        <h2 class="slide-title">Task 6: Sjokket &ndash; Hvorfor Åpen Sløyfe Feiler Totalt</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="task-text-box">
+              <div class="task-text-label">&#128221; Oppgavetekst (Oversatt til norsk)</div>
+              <div class="task-text-content">
+                Denne oppgaven utvider Oppgave 5. Kilden $u(t)$ ble satt til en konstant $\bar{u} = 12\text{ V}$ slik at $\bar{i} = 4\text{ A}$ når $R_{\text{load}} = 6\,\Omega$.<br>
+                [Kontekst:] Vi er bekymret for parametrisk usikkerhet: lastmotstanden kan endre seg uforutsett uten at vi har mulighet til å oppdatere $\bar{u}$.<br>
+                (a) Ved $t = 0$ endrer lastmotstanden seg brått til $R_{\text{load}} = 4\,\Omega$. Bestem den nye likevektsstrømmen. Opererer systemet fortsatt ved ønsket likevekt på $4\text{ A}$?<br>
+                (b) Forklar hvorfor en ideell strømkilde $I_{\text{ref}}$ i direkte serie ikke er egnet.
+              </div>
+            </div>
+
+            <div class="step-container">
+              <div class="step-card danger">
+                <div class="step-title"><span class="step-tag" style="background:#fee2e2; color:#991b1b;">DEL (a)</span> Katastrofal feil: Strømmen skyter opp til 12 A!</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Beregn den nye likevektsstrømmen med fast spenning $\bar{u} = 12\text{ V}$:</strong><br>
+                  $$\bar{i}_{\text{ny}} = \frac{\bar{u}}{R_{\text{load, ny}} - k} = \frac{12\text{ V}}{4\,\Omega - 3\,\Omega} = \frac{12}{1} = \mathbf{12\text{ A!}}$$
+                  <div class="danger-box" style="margin-top:10px;">
+                    <strong>+200 % reguleringsfeil!</strong> Strømmen har tredoblet seg fordi kretsen mangler tilbakemelding.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="circuit-display-card">
+              <h4>&#9889; Originalt Kretsskjema (Figur 6 fra oppgaven)</h4>
+              <img src="../assets/circuits/circuit_task6.png" alt="Figur 6 Kretsskjema" class="circuit-img">
+            </div>
+
+            <div class="step-card">
+              <div class="step-title"><span class="step-tag">DEL (b)</span> Hvorfor ikke bare en ideell strømkilde i serie?</div>
+              <div class="step-body">
+                <strong>Steg 1 &ndash; Fysisk umulig Dirac-spenningspuls:</strong><br>
+                Hvis initialstrømmen $i(0) \ne I_{\text{ref}}$, ville en serie-strømkilde krevd en momentan strømendring. Siden $v_L = L \frac{di}{dt}$, ville spenningen blitt <strong>uendelig ($v_L \to \infty$)</strong>, som brenner opp kretsen!<br>
+                <strong>Steg 2 &ndash; Kveler all naturlig dynamikk:</strong><br>
+                En ideell strømkilde har uendelig impedans og fjerner muligheten til å forme responstid og dempning.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 16: TASK 6 (DEL 2) -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="16">
+      <div class="slide-content">
+        <div class="section-tag">Oppgave 6 &middot; Del 2</div>
+        <h2 class="slide-title">Task 6: Løsningen &ndash; Den Digitale PI-Regulatoren</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="task-text-box">
+              <div class="task-text-label">&#128221; Oppgavetekst (Oversatt til norsk)</div>
+              <div class="task-text-content">
+                (c) Utled en andreordens differensialligning for strømmen $i(t)$.<br>
+                (d) Bestem likevektsstrømmen $\bar{i} = \lim_{t\to\infty} i(t)$. Vis at dette gir $\bar{i} = I_{\text{ref}} = 4\text{ A}$ fullstendig uavhengig av endringer i $R_{\text{load}}$ eller andre parametere.<br>
+                (e) Finn ligningen for $u(t)$ og vis at dette tilsvarer en klassisk PI-regulator.
+              </div>
+            </div>
+
+            <div class="step-container">
+              <div class="step-card success">
+                <div class="step-title"><span class="step-tag">DEL (c) &amp; (d)</span> 2. ordens ODE &amp; Bevis for Parameter-Uavhengighet</div>
+                <div class="step-body">
+                  <strong>Steg 1 &ndash; Likestill spenningene:</strong> $u(t) = v_C(t) - R_1 i(t) = L \frac{di}{dt} + (R_{\text{load}} - k) i(t)$.<br>
+                  <strong>Steg 2 &ndash; Deriver og bruk KCL ($\frac{dv_C}{dt} = \frac{1}{C}(I_{\text{ref}} - i)$):</strong><br>
+                  $$\mathbf{L \frac{d^2 i}{dt^2} + (R_1 + R_{\text{load}} - k)\frac{di}{dt} + \frac{1}{C} i(t) = \frac{1}{C} I_{\text{ref}}}$$
+                  <strong>Steg 3 &ndash; Stasjonærtilstand ($t \to \infty$):</strong> Alle deriverte dør ut:<br>
+                  $$0 + 0 + \frac{1}{C} \bar{i} = \frac{1}{C} I_{\text{ref}} \implies \mathbf{\bar{i} = I_{\text{ref}} = 4\text{ A}}$$
+                  $R_{\text{load}}$ faller fullstendig ut! Strømmen blir 4 A uansett lastendring!
+                </div>
+              </div>
+
+              <div class="step-card">
+                <div class="step-title"><span class="step-tag">DEL (e)</span> Ekvivalens med PI-regulator</div>
+                <div class="step-body">
+                  $$u(t) = \underbrace{R_1 \cdot e(t)}_{\text{Proporsjonalledd } K_p} + \underbrace{\frac{1}{C}\int_0^t e(\tau)d\tau}_{\text{Integralledd } K_i} + u_0$$
+                  Hvor $K_p = R_1 = 6\text{ V/A}$ og $K_i = \frac{1}{C} = 6.67\text{ V/(A}\cdot\text{s)}$.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="graph-container">
+              <h4>Åpen Sløyfe (Feiler) vs PI-Regulering (Gjenoppretter)</h4>
+              <img src="../assets/plots/task5_6_control_comparison.png" alt="Task 5 vs 6 Plot" class="slide-img">
+              <div class="img-caption">PI-regulatoren justerer automatisk spenningen ned til 4 V for å holde nøyaktig 4 A!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 17: TASK 6 I VIRKELIGHETEN -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="17">
+      <div class="slide-content">
+        <div class="section-tag">Industriell Anvendelse &middot; Oppgave 6</div>
+        <h2 class="slide-title">Mikrokontrollere, Elbil-motorer &amp; Digital PI-Styring</h2>
+
+        <div class="two-col-layout">
+          <div class="col-left">
+            <div class="realworld-card">
+              <img src="../assets/images/digital_pi_control_microcontroller.jpg" alt="Digital PI Microcontroller" class="realworld-img">
+            </div>
+          </div>
+
+          <div class="col-right">
+            <div class="badge-tag">Mikrokontrollere &middot; FOC Motorstyring &middot; Kraftelektronikk</div>
+            
+            <div class="takeaway-card">
+              <h4>Fra kretsdiagram til C-kode</h4>
+              <p>
+                Kondensatoren og motstanden i den blå boksen implementeres digitalt i en mikrokontroller (f.eks. STM32 eller TI C2000) ved 20 000 ganger i sekundet (20 kHz):
+              </p>
+            </div>
+
+            <div class="code-box" style="margin-top:12px;">
+              <code>float e = I_ref - I_meas;            <span class="code-comment">// 1. Regn ut avviket</span></code><br>
+              <code>integrator += (1.0f / C) * e * Ts;   <span class="code-comment">// 2. Kondensatorlading (I-ledd)</span></code><br>
+              <code>float u = R1 * e + integrator + u0;  <span class="code-comment">// 3. Reguleringsspenning (PI)</span></code><br>
+              <code>set_pwm(u);                          <span class="code-comment">// 4. Send til transistorene</span></code>
+            </div>
+
+            <div class="solution-box" style="margin-top:12px;">
+              Enten elbilen kjører i en motbakke eller motoren blir glovarm, garanterer <strong>integralleddet</strong> at momentet blir 100 % nøyaktig.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SLIDE 18: OPPSUMMERING & KONKLUSJON -->
+    <!-- ============================================================ -->
+    <section class="slide" data-slide="18">
+      <div class="slide-content">
+        <div class="section-tag">Oppsummering &middot; Eksamenssammendrag</div>
+        <h2 class="slide-title">De 4 Store Prinsippene i SLT-1</h2>
+
+        <div class="intro-cards-row" style="grid-template-columns: repeat(2, 1fr); max-width: 100%;">
+          <div class="intro-feature">
+            <div class="intro-feature-icon">&#128260;</div>
+            <h3>1. Tilstandskontinuitet</h3>
+            <p>Spoler bevarer strøm ($i_L$), kondensatorer bevarer spenning ($v_C$). Hvis du tvinger frem et brudd, svarer kretsen med voldsomme spenningsspisser (flyback) eller strømsprang (inrush).</p>
+          </div>
+
+          <div class="intro-feature">
+            <div class="intro-feature-icon">&#9878;</div>
+            <h3>2. Dynamisk Stabilitet</h3>
+            <p>Aktive kilder kan oppføre seg som negativ motstand. Egenverdier med $\lambda > 0$ gir ustabil eksplosjon; $\lambda < 0$ gir stabil dempning mot likevekt.</p>
+          </div>
+
+          <div class="intro-feature">
+            <div class="intro-feature-icon">&#9874;</div>
+            <h3>3. Bevaringslover &amp; Paradokser</h3>
+            <p>Ladningsbevaring reduserer systemets orden. To kondensatorer i en lukket krets taper alltid 90 % av energien som varme under utligning, uavhengig av motstandsverdi.</p>
+          </div>
+
+          <div class="intro-feature" style="border-color:var(--ntnu-blue); background:#eff6ff;">
+            <div class="intro-feature-icon">&#127919;</div>
+            <h3 style="color:var(--ntnu-blue);">4. PI-Reguleringens Magi</h3>
+            <p>Foroverkobling (åpen sløyfe) svikter ved den minste lastendring. Tilbakekobling med integralvirkning gir uendelig DC-forsterkning og tvinger feilen til <strong>nøyaktig 0 %</strong>!</p>
+          </div>
+        </div>
+
+        <div class="takeaway-card" style="text-align:center; margin-top:24px;">
+          <p style="font-size:1.2rem; font-weight:800; color:var(--ntnu-blue);">
+            Lykke til med TET4100! Du har nå full kontroll på både formlene, fysikken, kretsene og de virkelige anvendelsene.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Interactive Presentation Controls -->
+  <footer class="bottom-bar">
+    <div class="slide-indicator">
+      Slide <span id="current-slide-num">1</span> av <span id="total-slides-num">18</span>
+    </div>
+
+    <div class="deck-buttons">
+      <button id="btn-prev" class="nav-btn" title="Forrige slide (&larr;)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+        Forrige
+      </button>
+      <button id="btn-next" class="nav-btn primary-nav-btn" title="Neste slide (&rarr; / Space)">
+        Neste
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+
+    <div class="quick-jump-container">
+      <label for="slide-select">Hopp til:</label>
+      <select id="slide-select" class="slide-dropdown">
+        <option value="1">1. Tittel &amp; Intro</option>
+        <option value="2">2. Det Store Bildet (Veikart)</option>
+        <option value="3">3. Task 1 (Del 1): Kretsskjema &amp; Oppgavetekst</option>
+        <option value="4">4. Task 1 (Del 2): Flyback-spiss &amp; Strøm</option>
+        <option value="5">5. Task 1 i Virkeligheten (Relébeskyttelse)</option>
+        <option value="6">6. Task 2 (Del 1): Kretsskjema &amp; Oppgavetekst</option>
+        <option value="7">7. Task 2 (Del 2): Reversering &amp; Strømsprang</option>
+        <option value="8">8. Task 2 &amp; 4 i Virkeligheten (Elbil Pre-charge)</option>
+        <option value="9">9. Task 3 (Del 1): Kretsskjema &amp; Oppgavetekst</option>
+        <option value="10">10. Task 3 (Del 2): Ustabil vs Stabil</option>
+        <option value="11">11. Task 3 i Virkeligheten (Kraftnett-svingninger)</option>
+        <option value="12">12. Task 4 (Del 1): Kretsskjema &amp; Oppgavetekst</option>
+        <option value="13">13. Task 4 (Del 2): 90% Energitap-paradokset</option>
+        <option value="14">14. Task 5: Kretsskjema &amp; Oppgavetekst</option>
+        <option value="15">15. Task 6 (Del 1): Kretsskjema &amp; Oppgavetekst</option>
+        <option value="16">16. Task 6 (Del 2): Digital PI-Regulering</option>
+        <option value="17">17. Task 6 i Virkeligheten (MCU &amp; FOC-kode)</option>
+        <option value="18">18. Oppsummering &amp; Eksamenssammendrag</option>
+      </select>
+    </div>
+  </footer>
+
+  <!-- Modal / Grid Overview of Slides -->
+  <div id="grid-modal" class="grid-modal">
+    <div class="grid-modal-content">
+      <div class="grid-modal-header">
+        <h3>Velg Slide (1 &ndash; 18)</h3>
+        <button id="btn-close-grid" class="close-btn">&times;</button>
+      </div>
+      <div class="grid-cards-container" id="grid-cards-container">
+        <!-- Rendered dynamically by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

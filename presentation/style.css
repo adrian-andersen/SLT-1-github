@@ -1,0 +1,1003 @@
+/* ==========================================================
+   TET4100 SLT-1 Presentation Stylesheet
+   Lys, Ren og Ekstremt Romslig Hvit Profil (NTNU Standard)
+   Ekstra store skrifttyper, gigantiske grafer og kretsskjemaer,
+   optimal skjermutnyttelse med minimalt tomrom.
+   ========================================================== */
+
+:root {
+  /* Ren hvit og lys fargepalett */
+  --bg-page: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f8fafc;
+  
+  --border-light: #e2e8f0;
+  --border-subtle: #cbd5e1;
+  --border-primary: #93c5fd;
+
+  /* NTNU-profil og aksentfarger */
+  --ntnu-blue: #00509e;
+  --ntnu-blue-hover: #003d7a;
+  --primary: #0284c7;
+  --primary-light: #e0f2fe;
+  
+  --accent-emerald: #059669;
+  --accent-emerald-bg: #ecfdf5;
+  --accent-amber: #d97706;
+  --accent-amber-bg: #fffbeb;
+  --accent-rose: #dc2626;
+  --accent-rose-bg: #fef2f2;
+  --accent-purple: #7c3aed;
+  --accent-purple-bg: #f5f3ff;
+
+  /* Typografi med ekstra høy kontrast og stor størrelse */
+  --text-main: #0f172a;       /* Nærmest sort for maksimal lesbarhet */
+  --text-muted: #1e293b;      /* Dyp koksgrå for forklaringstekst */
+  --text-dim: #475569;        /* Sekundærtekst */
+
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 14px 36px rgba(0, 0, 0, 0.09), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(2, 132, 199, 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 90% 90%, rgba(0, 80, 158, 0.06) 0%, transparent 45%);
+}
+
+/* ----------------------------------------------------------
+   Top Navigation
+   ---------------------------------------------------------- */
+.top-nav {
+  height: 70px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  position: relative;
+  z-index: 50;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ntnu-badge {
+  background: var(--ntnu-blue);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  padding: 6px 14px;
+  border-radius: 8px;
+}
+
+.course-code {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--ntnu-blue);
+}
+
+.topic-title {
+  color: var(--text-muted);
+  font-size: 1.18rem;
+  font-weight: 700;
+  border-left: 2px solid var(--border-light);
+  padding-left: 18px;
+}
+
+.nav-controls {
+  display: flex;
+  gap: 14px;
+}
+
+.control-btn {
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 1.02rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.control-btn:hover {
+  background: #f1f5f9;
+  color: var(--ntnu-blue);
+  border-color: var(--ntnu-blue);
+}
+
+.progress-bar-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--border-light);
+}
+
+.progress-bar {
+  height: 100%;
+  width: 5.5%;
+  background: linear-gradient(90deg, var(--ntnu-blue), var(--primary));
+  transition: width 0.3s ease;
+}
+
+/* ----------------------------------------------------------
+   Deck & Slide Layout (Fyller skjermen maksimalt)
+   ---------------------------------------------------------- */
+.deck-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 8px 14px;
+}
+
+.slide {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 12px;
+  right: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.slide-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 22px 34px;
+  height: 100%;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* Scrollbar */
+.slide-content::-webkit-scrollbar {
+  width: 8px;
+}
+.slide-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.section-tag {
+  color: var(--ntnu-blue);
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 4px;
+}
+
+.slide-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  margin-bottom: 16px;
+  line-height: 1.22;
+}
+
+.lead-text {
+  font-size: 1.35rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* ----------------------------------------------------------
+   Oppgavetekst (Norsk Oversettelse & Original)
+   ---------------------------------------------------------- */
+.task-text-box {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-left: 7px solid var(--ntnu-blue);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 18px 24px;
+  margin-bottom: 16px;
+}
+
+.task-text-label {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--ntnu-blue);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.task-text-content {
+  font-size: 1.32rem;
+  color: var(--text-main);
+  line-height: 1.65;
+}
+
+/* ----------------------------------------------------------
+   Store, Tydelige Kretsskjemaer
+   ---------------------------------------------------------- */
+.circuit-display-card {
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  height: 100%;
+}
+
+.circuit-display-card h4 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--ntnu-blue);
+  margin-bottom: 12px;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.circuit-img {
+  width: 100%;
+  max-height: 480px;
+  min-height: 260px;
+  object-fit: contain;
+  background: #ffffff;
+  padding: 6px;
+}
+
+/* ----------------------------------------------------------
+   Steg-for-steg Utregning & Matematiske Bevis (Store Fonter)
+   ---------------------------------------------------------- */
+.step-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.step-card {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-left: 6px solid var(--primary);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 20px 28px;
+  box-shadow: var(--shadow-sm);
+}
+
+.step-card.danger {
+  border-left-color: var(--accent-rose);
+  background: var(--accent-rose-bg);
+}
+
+.step-card.success {
+  border-left-color: var(--accent-emerald);
+  background: var(--accent-emerald-bg);
+}
+
+.step-title {
+  font-size: 1.42rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.step-tag {
+  background: #e0f2fe;
+  color: var(--ntnu-blue);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.step-body {
+  font-size: 1.28rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.step-body strong {
+  color: #0f172a;
+}
+
+.step-formula-box {
+  background: #f1f5f9;
+  border-radius: var(--radius-sm);
+  padding: 14px 22px;
+  margin: 12px 0;
+  border: 1px solid #e2e8f0;
+}
+
+/* Forstørr KaTeX til å være krystallklar og stor */
+.katex {
+  font-size: 1.38em !important;
+}
+
+.katex-display {
+  margin: 14px 0 !important;
+  font-size: 1.08em;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* ----------------------------------------------------------
+   Nybegynner-intuisjon & Takeaway
+   ---------------------------------------------------------- */
+.intuition-box {
+  background: #eff6ff;
+  border-left: 6px solid var(--primary);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 20px 28px;
+  margin-bottom: 16px;
+}
+
+.intuition-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.32rem;
+  font-weight: 800;
+  color: #0369a1;
+  margin-bottom: 8px;
+}
+
+.intuition-text {
+  font-size: 1.28rem;
+  color: #1e3a8a;
+  line-height: 1.68;
+}
+
+.takeaway-card {
+  background: #f8fafc;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 20px 28px;
+  margin-top: 14px;
+}
+
+.takeaway-card h4 {
+  font-size: 1.32rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.takeaway-card p {
+  font-size: 1.24rem;
+  color: var(--text-muted);
+  line-height: 1.68;
+}
+
+/* ----------------------------------------------------------
+   Layout med To Kolonner (Utnytter bredden)
+   ---------------------------------------------------------- */
+.two-col-layout {
+  display: grid;
+  grid-template-columns: 1.18fr 1fr;
+  gap: 26px;
+  flex: 1;
+  align-items: stretch;
+}
+
+.col-left, .col-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+/* Grafer og Bilder (Mye større visning) */
+.graph-container {
+  background: #ffffff;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  height: 100%;
+}
+
+.graph-container h4 {
+  font-size: 1.28rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  align-self: flex-start;
+}
+
+.slide-img {
+  width: 100%;
+  max-height: 560px;
+  min-height: 320px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+}
+
+.img-caption {
+  font-size: 1.15rem;
+  color: var(--text-dim);
+  margin-top: 14px;
+  text-align: center;
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* Virkelige applikasjoner */
+.realworld-card {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 2px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
+  background: #ffffff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.realworld-img {
+  width: 100%;
+  height: auto;
+  max-height: 560px;
+  min-height: 320px;
+  object-fit: cover;
+  display: block;
+}
+
+.badge-tag {
+  display: inline-block;
+  background: #e0f2fe;
+  color: var(--ntnu-blue);
+  font-weight: 800;
+  font-size: 1.05rem;
+  padding: 7px 18px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+  border: 1px solid #bae6fd;
+}
+
+.danger-box {
+  background: var(--accent-rose-bg);
+  border-left: 6px solid var(--accent-rose);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 20px 28px;
+  color: #991b1b;
+  font-size: 1.28rem;
+  line-height: 1.68;
+}
+
+.solution-box {
+  background: var(--accent-emerald-bg);
+  border-left: 6px solid var(--accent-emerald);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 20px 28px;
+  color: #065f46;
+  font-size: 1.28rem;
+  line-height: 1.68;
+}
+
+.code-box {
+  background: #0f172a;
+  border-radius: var(--radius-sm);
+  padding: 22px 28px;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: #f8fafc;
+}
+
+.code-comment {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* Intro Hero */
+.intro-slide {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-tag {
+  background: #e0f2fe;
+  color: var(--ntnu-blue);
+  font-weight: 800;
+  font-size: 1.15rem;
+  padding: 9px 26px;
+  border-radius: 30px;
+  margin-bottom: 22px;
+  border: 1px solid #bae6fd;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.18;
+  color: #0f172a;
+  max-width: 1400px;
+  margin-bottom: 22px;
+}
+
+.hero-subtitle {
+  font-size: 1.65rem;
+  color: var(--text-muted);
+  max-width: 1150px;
+  line-height: 1.6;
+  margin-bottom: 38px;
+}
+
+.intro-cards-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  max-width: 1550px;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 28px;
+}
+
+.intro-feature {
+  background: #ffffff;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 30px;
+  box-shadow: var(--shadow-sm);
+}
+
+.intro-feature-icon {
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+}
+
+.intro-feature h3 {
+  font-size: 1.48rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+
+.intro-feature p {
+  font-size: 1.22rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Det store bildet */
+.flow-diagram-clean {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1.15fr;
+  align-items: center;
+  gap: 18px;
+  margin: 24px 0;
+  max-width: 1600px;
+  width: 100%;
+}
+
+.clean-step {
+  background: #ffffff;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--shadow-sm);
+}
+
+.clean-step.active-step {
+  border-color: var(--ntnu-blue);
+  background: #f0f7ff;
+}
+
+.clean-step-num {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--ntnu-blue);
+  text-transform: uppercase;
+}
+
+.clean-step h4 {
+  font-size: 1.38rem;
+  color: var(--text-main);
+}
+
+.clean-step p {
+  font-size: 1.18rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.flow-arrow-clean {
+  font-size: 2.4rem;
+  color: #94a3b8;
+  font-weight: bold;
+}
+
+/* Stabilitetssammenligning */
+.stability-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.stability-card {
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 26px;
+  background: #ffffff;
+}
+
+.stability-card.unstable {
+  border-color: #fca5a5;
+  background: #fff5f5;
+}
+
+.stability-card.stable {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+.stability-card h4 {
+  font-size: 1.42rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.stability-card.unstable h4 {
+  color: #991b1b;
+}
+
+.stability-card.stable h4 {
+  color: #166534;
+}
+
+.stability-card p, .stability-card li {
+  font-size: 1.24rem;
+  color: var(--text-muted);
+  line-height: 1.68;
+}
+
+/* Komplekst s-plan (Slide 11) */
+.calc-card {
+  background: #ffffff;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-md);
+  height: 100%;
+}
+
+.calc-header {
+  font-size: 1.32rem;
+  font-weight: 800;
+  color: var(--ntnu-blue);
+  margin-bottom: 12px;
+}
+
+.complex-plane {
+  position: relative;
+  background: #f8fafc;
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  height: 320px !important;
+  width: 100%;
+}
+
+.axis-v {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #64748b;
+}
+
+.axis-h {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #64748b;
+}
+
+.stable-zone {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #166534;
+  background: rgba(220, 252, 231, 0.9);
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.unstable-zone {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #991b1b;
+  background: rgba(254, 226, 226, 0.9);
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.pole {
+  position: absolute;
+  font-size: 2.6rem;
+  font-weight: 900;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+}
+
+.pole-unstable {
+  left: 78%;
+  top: 50%;
+  color: #dc2626;
+}
+
+.pole-stable {
+  left: 22%;
+  top: 50%;
+  color: #059669;
+}
+
+/* ----------------------------------------------------------
+   Bottom Navigation Bar
+   ---------------------------------------------------------- */
+.bottom-bar {
+  height: 74px;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  z-index: 50;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.03);
+  flex-shrink: 0;
+}
+
+.slide-indicator {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  color: var(--text-muted);
+}
+
+.slide-indicator span {
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.deck-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.nav-btn {
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 11px 26px;
+  border-radius: var(--radius-sm);
+  font-size: 1.12rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+  background: #f1f5f9;
+  border-color: var(--ntnu-blue);
+}
+
+.primary-nav-btn {
+  background: var(--ntnu-blue);
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 80, 158, 0.25);
+}
+
+.primary-nav-btn:hover {
+  background: var(--ntnu-blue-hover);
+}
+
+.quick-jump-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.slide-dropdown {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 1.02rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Modal Grid */
+.grid-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s ease;
+}
+
+.grid-modal.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.grid-modal-content {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  width: 92%;
+  max-width: 1280px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.grid-modal-header {
+  padding: 22px 32px;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.grid-modal-header h3 {
+  font-size: 1.5rem;
+  color: var(--text-main);
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 2.2rem;
+  cursor: pointer;
+}
+
+.grid-cards-container {
+  padding: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 22px;
+  overflow-y: auto;
+}
+
+.grid-card-item {
+  background: #f8fafc;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.grid-card-item:hover {
+  background: #ffffff;
+  border-color: var(--ntnu-blue);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.grid-card-item.active {
+  border-color: var(--ntnu-blue);
+  background: #eff6ff;
+}
+
+.grid-card-num {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--ntnu-blue);
+}
+
+.grid-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
