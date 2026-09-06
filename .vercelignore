@@ -1,0 +1,15 @@
+# Exclude Python scripts and figures generation from Vercel deployment
+scripts/
+scripts
+*.py
+*requirements*
+
+# Exclude zip distribution archive
+dist/
+dist
+
+# Exclude Windows batch files
+*.bat
+
+# Documentation only
+SLT1_Komplett_Oversikt.md

@@ -57,7 +57,7 @@ SLT-1-github/
 ├── scripts/                       # Python-kildekode for å generere figurer på nytt
 │   ├── generate_plots.py          # Genererer alle plott i assets/plots/
 │   ├── generate_circuit_diagrams.py # Tegner kretser i assets/circuits/
-│   └── requirements.txt           # Pakkekrav (numpy, matplotlib, schemdraw)
+│   └── requirements-figures.txt   # Pakkekrav (numpy, matplotlib, schemdraw)
 │
 └── dist/                          # Distribusjons- og delingsarkiv
     └── TET4100_SLT1_Presentasjon.zip # Komplett pakket prosjekt klart for deling
@@ -94,7 +94,7 @@ SLT-1-github/
 Dersom du ønsker å generere plottene og kretsskjemaene på nytt:
 ```bash
 cd scripts
-pip install -r requirements.txt
+pip install -r requirements-figures.txt
 python generate_circuit_diagrams.py
 python generate_plots.py
 ```
